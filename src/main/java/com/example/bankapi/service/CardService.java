@@ -1,9 +1,8 @@
 package com.example.bankapi.service;
 
-import com.example.bankapi.controller.wrapper.WrapperBill;
-import com.example.bankapi.controller.wrapper.WrapperCard;
 import com.example.bankapi.model.Bill;
 import com.example.bankapi.model.Card;
+import com.example.bankapi.model.User;
 import com.example.bankapi.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,12 @@ import java.util.List;
 
 @Service
 public class CardService {
-    @Autowired
     CardRepository cardRepository;
+
+    @Autowired
+    public CardService(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
 
     public List<Card> getCards(int id) {
         return cardRepository.queryForCards(id);
@@ -24,10 +27,19 @@ public class CardService {
     }
 
     public Card getCardById(int id) {
-        return cardRepository.getCardBiId(id);
+        Card card = cardRepository.getCardById(id);
+        return card;
     }
 
-    public Card create(Card card, int billId, int userId){
-        return cardRepository.save(card, billId, userId);
+    public void create(Card card){
+        cardRepository.save(card);
+    }
+
+    public void topUpBalance(Card card){
+        cardRepository.topUpBalance(card);
+    }
+
+    public Bill getBillByCardId(int id) {
+        return cardRepository.getBillByCardId(id);
     }
 }

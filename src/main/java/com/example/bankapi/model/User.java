@@ -3,7 +3,6 @@ package com.example.bankapi.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -11,6 +10,7 @@ import java.util.Set;
 public class User {
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "FIRST_NAME")
     private String firstName;
