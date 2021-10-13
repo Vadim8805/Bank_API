@@ -8,9 +8,12 @@ import com.example.bankapi.model.User;
 import com.example.bankapi.service.BillService;
 import com.example.bankapi.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -25,32 +28,35 @@ public class CardController {
         this.billService = billService;
     }
 
-    @PostMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody List<Object> req) {
-        int billId = CardUtil.getBillId(req);
-        Bill bill = billService.getBillById(billId);
-        User user = billService.getUserByBillId(billId);
-        String cardNumber = CardUtil.getCardNumber(req);
-        Card card = new Card(user, bill, cardNumber);
-        cardService.create(card);
-    }
-
     @GetMapping("/{userId}")
     public List<Card> getCards(@PathVariable int userId) {
         return cardService.getCards(userId);
     }
 
+    @PostMapping(value = "/create",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Card> createCard(@RequestBody List<Object> req) {
+        Card card = cardFromRequest(req);
+        return new ResponseEntity<>(cardService.create(card), HttpStatus.CREATED);
+    }
+
     @PostMapping(value = "/balance",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Double getBalance(@RequestBody WrapperCard wrapperCard ) {
+    public BigDecimal getBalance(@RequestBody WrapperCard wrapperCard ) {
         Card card = cardService.getCardById(wrapperCard.getId());
         return cardService.getBalance(card).getBalance();
     }
 
     @PostMapping(value = "/topUpBalance",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void topUpBalance(@RequestBody List<Object> req) {
-        int cardId = CardUtil.getCardId(req);
+    public ResponseEntity<Bill> topUpBalance(@RequestBody List<Object> req) {int cardId = CardUtil.getCardId(req);
         Bill bill = cardService.getBillByCardId(cardId);
-        bill.setBalance(bill.getBalance() + CardUtil.deposit(req));
-        billService.topUpBalance(bill);
+        bill.setBalance(bill.getBalance().add(CardUtil.deposit(req)));
+        return new ResponseEntity<>(billService.topUpBalance(bill), HttpStatus.CREATED);
+    }
+
+    private Card cardFromRequest(List<Object> req){
+        int billId = CardUtil.getBillId(req);
+        Bill bill = billService.getBillById(billId);
+        User user = billService.getUserByBillId(billId);
+        String cardNumber = CardUtil.getCardNumber(req);
+        return new Card(user, bill, cardNumber);
     }
 }

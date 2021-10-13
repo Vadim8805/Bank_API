@@ -15,8 +15,8 @@ CREATE TABLE bill
 (
     id              IDENTITY PRIMARY KEY auto_increment,
     user_id         INTEGER         NOT NULL,
-    bill_number      VARCHAR(20)     NOT NULL,
-    balance         DOUBLE          default 0,
+    bill_number     VARCHAR(20)     NOT NULL,
+    balance         DECIMAL         default 0,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX bill_unique_idx ON bill (bill_number);

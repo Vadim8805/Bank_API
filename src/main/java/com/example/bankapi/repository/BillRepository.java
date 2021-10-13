@@ -1,7 +1,6 @@
 package com.example.bankapi.repository;
 
 import com.example.bankapi.model.Bill;
-import com.example.bankapi.model.Card;
 import com.example.bankapi.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +25,9 @@ public class BillRepository {
         return entityManager.find(Bill.class, id);
     }
 
-    public void topUpBalance(Bill bill) {
+    public Bill topUpBalance(Bill bill) {
         entityManager.merge(bill);
+        entityManager.flush();
+        return bill;
     }
 }

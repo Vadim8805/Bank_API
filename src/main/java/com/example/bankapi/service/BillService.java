@@ -1,7 +1,7 @@
 package com.example.bankapi.service;
 
+import com.example.bankapi.exceptions.ResourceNotFoundException;
 import com.example.bankapi.model.Bill;
-import com.example.bankapi.model.Card;
 import com.example.bankapi.model.User;
 import com.example.bankapi.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,14 @@ public class BillService {
     }
 
     public Bill getBillById(int id) {
-        return billRepository.getBillById(id);
+        Bill bill = billRepository.getBillById(id);
+        if (bill == null) {
+            throw new ResourceNotFoundException("Такого счета не существует.");
+        }
+        return bill;
     }
 
-    public void topUpBalance(Bill bill){
-        billRepository.topUpBalance(bill);
+    public Bill topUpBalance(Bill bill){
+        return billRepository.topUpBalance(bill);
     }
 }

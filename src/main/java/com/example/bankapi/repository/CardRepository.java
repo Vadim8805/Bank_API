@@ -35,14 +35,25 @@ public class CardRepository {
         return entityManager.find(Card.class, id);
     }
 
-    public void save(Card card) {
+    public Card save(Card card) {
         entityManager.persist(card);
+        entityManager.flush();
+        return card;
     }
 
     public Bill getBillByCardId(int id) {
         Query query = entityManager.createQuery("select b from Bill b Inner Join Card c on b.id = c.bill.id where b.id =?1")
                 .setParameter(1, id);
+        if (query.getResultList().isEmpty()) {
+            return null;
+        }
         return (Bill) query.getSingleResult();
+    }
+
+    public Card getCardByNumber(String number) {
+        Query query = entityManager.createQuery("select c from Card c where c.number = ?1")
+                .setParameter(1, number);
+        return (Card) query.getSingleResult();
     }
 
     public void topUpBalance(Card card) {
