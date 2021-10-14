@@ -14,6 +14,9 @@ public class User {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Version
+    @Column(name = "VERSION")
+    private Integer version;
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Column(name = "SECOND_NAME")
@@ -21,11 +24,11 @@ public class User {
     @Column(name = "PATRONYMIC")
     private String patronymic;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private List<Bill> bills;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private List<Card> cards;
 }

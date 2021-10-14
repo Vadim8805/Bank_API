@@ -3,6 +3,7 @@ package com.example.bankapi;
 import com.example.bankapi.exceptions.FormatNumberException;
 import com.example.bankapi.exceptions.ResourceNotFoundException;
 import com.example.bankapi.repository.BillRepository;
+import com.example.bankapi.repository.BillRepositoryImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -32,12 +33,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @Sql({"/db/initDB.sql", "/db/populateDB.sql"})
 public class CardControllerTest {
+    private final MockMvc mockMvc;
+    private final BillRepository billRepository;
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private BillRepository billRepository;
+    public CardControllerTest(MockMvc mockMvc, BillRepository billRepository) {
+        this.mockMvc = mockMvc;
+        this.billRepository = billRepository;
+    }
 
     @Test
     public void testGetCards() throws Exception {

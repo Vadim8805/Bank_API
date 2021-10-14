@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class CardService {
-    CardRepository cardRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
     public CardService(CardRepository cardRepository) {
@@ -20,16 +20,15 @@ public class CardService {
     }
 
     public List<Card> getCards(int id) {
-        List<Card> cards = cardRepository.queryForCards(id);
-        System.out.println();
+        List<Card> cards = cardRepository.getCards(id);
         if (cards.size() == 0) {
             throw new ResourceNotFoundException("Держателя карты с таким id не существует.");
         }
-        return cardRepository.queryForCards(id);
+        return cards;
     }
 
     public Bill getBalance(Card card) {
-        return cardRepository.getBalance(card);
+        return cardRepository.getBalance(card.getBill().getId());
     }
 
     public Card getCardById(int id) {

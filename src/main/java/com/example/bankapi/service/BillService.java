@@ -1,5 +1,6 @@
 package com.example.bankapi.service;
 
+import com.example.bankapi.exceptions.FormatNumberException;
 import com.example.bankapi.exceptions.ResourceNotFoundException;
 import com.example.bankapi.model.Bill;
 import com.example.bankapi.model.User;
@@ -7,9 +8,11 @@ import com.example.bankapi.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class BillService {
-    BillRepository billRepository;
+    private final BillRepository billRepository;
 
     @Autowired
     public BillService(BillRepository billRepository) {
@@ -28,7 +31,10 @@ public class BillService {
         return bill;
     }
 
-    public Bill topUpBalance(Bill bill){
-        return billRepository.topUpBalance(bill);
+    public Bill updateBalance(Bill bill){
+        if (bill.getBalance().compareTo(new BigDecimal(0)) < 0) {
+            throw new FormatNumberException("Недостаточно средств на счету.");
+        }
+        return billRepository.updateBalance(bill);
     }
 }
