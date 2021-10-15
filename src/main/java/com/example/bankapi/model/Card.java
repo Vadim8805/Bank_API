@@ -23,7 +23,7 @@ public class Card {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bill_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference

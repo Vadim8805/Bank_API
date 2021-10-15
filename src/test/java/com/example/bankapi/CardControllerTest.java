@@ -158,7 +158,7 @@ public class CardControllerTest {
                                 .content(jsonInput)
                 ).andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-                .andExpect(result -> assertEquals("Счет не найден, карта не найдена.",
+                .andExpect(result -> assertEquals("Карта не найдена.",
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }

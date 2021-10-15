@@ -45,11 +45,11 @@ public class CardService {
     }
 
     public Bill getBillByCardId(int id) {
-        Bill bill = cardRepository.getBillByCardId(id);
+        Bill bill = cardRepository.getCardById(id).getBill();
         System.out.println();
         if (bill == null) {
             throw new ResourceNotFoundException("Счет не найден, карта не найдена.");
         }
-        return cardRepository.getBillByCardId(id);
+        return bill;
     }
 }

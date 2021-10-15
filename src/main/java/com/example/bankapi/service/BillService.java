@@ -19,10 +19,6 @@ public class BillService {
         this.billRepository = billRepository;
     }
 
-    public User getUserByBillId(int id) {
-        return billRepository.getUserByBillId(id);
-    }
-
     public Bill getBillById(int id) {
         Bill bill = billRepository.getBillById(id);
         if (bill == null) {

@@ -10,6 +10,5 @@ public interface CardRepository {
     Bill getBalance(int id);
     Card getCardById(int id);
     Card save(Card card);
-    Bill getBillByCardId(int id);
     void topUpBalance(Card card);
 }

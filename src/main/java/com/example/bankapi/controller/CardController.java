@@ -55,7 +55,7 @@ public class CardController {
     @PostMapping(value = "/topUpBalance",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Bill> topUpBalance(@RequestBody List<Object> req) {
         int cardId = CardUtil.getCardId(req);
-        Bill bill = cardService.getBillByCardId(cardId);
+        Bill bill = cardService.getCardById(cardId).getBill();
         bill.setBalance(bill.getBalance().add(CardUtil.deposit(req)));
         log.info("top up balance for {} for bill {}", CardUtil.deposit(req), bill.getId());
         return new ResponseEntity<>(billService.updateBalance(bill), HttpStatus.CREATED);
@@ -64,7 +64,7 @@ public class CardController {
     private Card cardFromRequest(List<Object> req){
         int billId = CardUtil.getBillId(req);
         Bill bill = billService.getBillById(billId);
-        User user = billService.getUserByBillId(billId);
+        User user = billService.getBillById(billId).getUser();
         String cardNumber = CardUtil.getCardNumber(req);
         return new Card(user, bill, cardNumber);
     }

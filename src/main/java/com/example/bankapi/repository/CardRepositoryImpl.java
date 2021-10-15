@@ -41,14 +41,14 @@ public class CardRepositoryImpl implements CardRepository {
         return card;
     }
 
-    public Bill getBillByCardId(int id) {
-        Query query = entityManager.createQuery("select b from Bill b Inner Join Card c on b.id = c.bill.id where b.id =?1")
-                .setParameter(1, id);
-        if (query.getResultList().isEmpty()) {
-            return null;
-        }
-        return (Bill) query.getSingleResult();
-    }
+//    public Bill getBillByCardId(int id) {
+//        Query query = entityManager.createQuery("select b from Bill b Inner Join Card c on b.id = c.bill.id where b.id =?1")
+//                .setParameter(1, id);
+//        if (query.getResultList().isEmpty()) {
+//            return null;
+//        }
+//        return (Bill) query.getSingleResult();
+//    }
 
     @Transactional
     public void topUpBalance(Card card) {
